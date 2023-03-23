@@ -18,9 +18,13 @@ public class visual
 
         // make bird fall, but jump when space is pressed
         bool spacePressed = false;
+        bool canMove = true;
+        double lastMoveTime = Raylib.GetTime();
 
         while (!Raylib.WindowShouldClose())
         {
+            double currentTime = Raylib.GetTime();
+
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
                 spacePressed = true;
@@ -31,14 +35,21 @@ public class visual
                 spacePressed = false;
             }
 
-            if (spacePressed)
+            if (spacePressed && canMove)
             {
-                bird.y -= 10;
+                bird.y -= 60;
+                lastMoveTime = currentTime;
+                canMove = false;
+            }
+
+            if (!canMove && (currentTime - lastMoveTime) * 1000 >= 200)
+            {
+                canMove = true;
             }
 
             if (!spacePressed)
             {
-                bird.y += 2;
+                bird.y += 1;
             }
 
             Raylib.BeginDrawing();
