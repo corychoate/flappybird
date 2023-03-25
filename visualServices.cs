@@ -23,11 +23,26 @@ public class visual
 
         while (!Raylib.WindowShouldClose())
         {
+            Console.WriteLine(bird.y);
             double currentTime = Raylib.GetTime();
 
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
                 spacePressed = true;
+            }
+            // Gives the bounce affect up if they hit the bottom
+            if (bird.y >= 750)
+            {
+                bird.y = 720;
+                canMove = false;
+                lastMoveTime = currentTime;
+            }
+            // This stops the user from going above the roof
+            if (bird.y <= 45)
+            {
+                canMove = false;
+                lastMoveTime = currentTime;
+
             }
 
             if (Raylib.IsKeyReleased(KeyboardKey.KEY_SPACE))
