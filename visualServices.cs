@@ -14,7 +14,8 @@ public class visual
         Raylib.SetTargetFPS(60);
 
         //draw bird
-        Rectangle bird = new Rectangle(80, 400, 50, 50);
+        Rectangle bird = Character.GetBird();
+        Rectangle testbox = new Rectangle(80, 700, 70, 70);
 
         // make bird fall, but jump when space is pressed
         bool spacePressed = false;
@@ -66,6 +67,11 @@ public class visual
             {
                 bird.y += 1;
             }
+            if (Raylib.CheckCollisionRecs(bird, testbox))
+            {
+                Raylib.EndDrawing();
+                break;
+            }
 
             Raylib.BeginDrawing();
 
@@ -78,7 +84,8 @@ public class visual
 
             //draw the bird
             Raylib.DrawRectangleRec(bird, Color.YELLOW);
-
+            Raylib.DrawRectangleRec(testbox, Color.RED);
+            
             //the exit button ends the game
             Raylib.EndDrawing();
         }
