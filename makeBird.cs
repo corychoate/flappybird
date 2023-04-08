@@ -3,11 +3,12 @@ using Raylib_cs;
 
 namespace flappybird
 {
-    static class Character
+    static class makeBird
     {
         public static Rectangle GetBird()
         {
-            Rectangle bird = new Rectangle(80, 400, 50, 50);
+            //                  Top left:  X , Y || width, height
+            Rectangle bird = new Rectangle(125, 400, 50, 50);
             Raylib.DrawRectangleRec(bird, Color.YELLOW);
             return bird;
         }
