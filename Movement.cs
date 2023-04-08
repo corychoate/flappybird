@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Raylib_cs;
 
 namespace flappybird
@@ -10,7 +11,7 @@ namespace flappybird
         {
         }
 
-        public void pipesMovement(Rectangle[] SpawnedPipes, int speed)
+        public void pipesMovement(Rectangle[] SpawnedPipes, int speed, List<Rectangle[]> allPipes)
         {
             if (SpawnedPipes[0].x > -100 && SpawnedPipes[1].x > -100)
             {
@@ -19,7 +20,13 @@ namespace flappybird
             }
             else
             {
-                pipeClass.resetPipe(SpawnedPipes);
+                for (int i = 0; i < allPipes.Count; i++)
+                {
+                    if (allPipes[i][0].x <= -100)
+                    {
+                        pipeClass.resetPipe(allPipes[i], allPipes);
+                    }
+                }
             }
         }
     }

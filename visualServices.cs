@@ -18,8 +18,12 @@ namespace flappybird
             Rectangle bird = makeBird.GetBird();
 
             // draw pipes
+            List<Rectangle[]> allPipes = new List<Rectangle[]>();
 
-            Rectangle[] pipes = Pipes.buildPipes(rnd.Next(90, 710));
+            allPipes.Add(Pipes.buildPipes(rnd.Next(90, 710), 600));
+            allPipes.Add(Pipes.buildPipes(rnd.Next(90, 710), 900));
+            allPipes.Add(Pipes.buildPipes(rnd.Next(90, 710), 1200));
+            allPipes.Add(Pipes.buildPipes(rnd.Next(90, 710), 1500));
 
             // move pipes
             Movement move = new Movement();
@@ -31,8 +35,10 @@ namespace flappybird
             while (!Raylib.WindowShouldClose())
             {
                 double currentTime = Raylib.GetTime();
-                move.pipesMovement(pipes, 2);
-
+                foreach (Rectangle[] pairOfPipes in allPipes)
+                {
+                    move.pipesMovement(pairOfPipes, 2, allPipes);
+                }
                 if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
                 {
                     spacePressed = true;
@@ -73,33 +79,39 @@ namespace flappybird
                 {
                     bird.y += 1;
                 }
-                if (Raylib.CheckCollisionRecs(bird, pipes[0]) ||
-                    Raylib.CheckCollisionRecs(bird, pipes[1]))
-                {
-                    Raylib.EndDrawing();
-                    break;
-                }
 
+                foreach (Rectangle[] pairOfPipes in allPipes)
+                {
+                    if (Raylib.CheckCollisionRecs(bird, pairOfPipes[0]) ||
+                    Raylib.CheckCollisionRecs(bird, pairOfPipes[1]))
+                    {
+                        Raylib.EndDrawing();
+                        break;
+                    }
+                }
                 Raylib.BeginDrawing();
 
-                //backround color
+                // Background color
                 Raylib.ClearBackground(Color.WHITE);
 
-                //create score at top left
-                //                text,    x,  y,  size,  color
+                // Create score at top left
                 Raylib.DrawText("Score: ", 12, 12, 50, Color.BLACK);
 
-                //draw the bird
+                // Draw the bird
                 Raylib.DrawRectangleRec(bird, Color.YELLOW);
 
-                //draw the pipes
-                Raylib.DrawRectangleRec(pipes[0], Color.GREEN);
-                Raylib.DrawRectangleRec(pipes[1], Color.GREEN);
+                // Draw the pipes
+                foreach (Rectangle[] pairOfPipes in allPipes)
+                {
+                    Raylib.DrawRectangleRec(pairOfPipes[0], Color.GREEN);
+                    Raylib.DrawRectangleRec(pairOfPipes[1], Color.GREEN);
+                }
 
-                //the exit button ends the game
+                // End drawing
                 Raylib.EndDrawing();
             }
 
+            // Close window (moved outside the loop)
             Raylib.CloseWindow();
         }
     }
